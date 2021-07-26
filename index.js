@@ -204,6 +204,9 @@ io.on("connection", function (client) {
   });
 });
 
+app.get("/teste", (req, res) => {
+  res.send(new Date());
+});
 http.listen(port, function () {
   console.log("Zero:" + port);
 });
