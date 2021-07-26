@@ -2,8 +2,8 @@ var app = require("express")();
 var http = require("http").Server(app);
 var io = require("socket.io")(http, {
   cors: {
-    methods: ["GET", "POST"],
-    origin: "*",
+    methods: ["PUT", "GET", "POST", "DELETE", "OPTIONS"],
+    origin: "https://zeroback.herokuapp.com",
   },
 });
 
