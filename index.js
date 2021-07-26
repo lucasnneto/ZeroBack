@@ -1,17 +1,17 @@
 var app = require("express")();
 var http = require("http").Server(app);
 var io = require("socket.io")(http, {
+  allowEIO3: true,
   cors: {
-    methods: ["PUT", "GET", "POST", "DELETE", "OPTIONS"],
-    origin: "https://zeroback.herokuapp.com",
+    origin: "*",
   },
 });
 
 var port = process.env.PORT || 3000;
 
-// app.get('/chat', (req, res) => {
-//   res.sendFile(__dirname + '/index.html');
-// });
+app.get("/chat", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
 
 var Players = [];
 
