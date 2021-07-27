@@ -207,7 +207,6 @@ io.on("connection", (client) => {
         );
         if (index != -1) {
           Players.splice(index, 1);
-          delete Players[message.data.player_id];
           let playerLeaved = {
             action: "PLAYER_LOGOUT",
             data: {
