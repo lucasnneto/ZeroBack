@@ -201,6 +201,22 @@ io.on("connection", (client) => {
         console.log("PLAYER DAMAGE: ", playerDamage);
         client.broadcast.emit("message", playerDamage);
         break;
+      case "LOGOUT":
+        delete Players[message.data.player_id];
+        let playerLeaved = {
+          action: "PLAYER_LEAVED",
+          data: {
+            nick: message.data.nick,
+            id: message.data.player_id,
+            playersON: Players,
+          },
+          error: false,
+          msg: "",
+        };
+        console.log("MESSAGE - playerLeaved:: ", playerLeaved);
+        client.broadcast.emit("message", playerLeaved);
+
+        break;
     }
 
     // user disconnected
