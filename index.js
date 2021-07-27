@@ -61,7 +61,11 @@ function createPlayer(message, id) {
     message.data.hp
   );
   console.log("PLAYER CREATED: ", player);
-  Player[id] = player;
+  Player = {
+    ...Player,
+    [id]: player,
+  };
+  // Player[id] = player;
   console.log("PLAYERS DISPONÍVEIS: ", Players);
   return player;
 }
