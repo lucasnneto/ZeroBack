@@ -89,8 +89,21 @@ function existeNick(nickPlayer) {
   }
   return lRetorno;
 }
+app.get("/clean", (req, res) => {
+  Players = [];
+  res.send("PlayerCleaned");
+  const player = {
+    action: "CLEAN",
+    data: {
+      playersON: Players,
+    },
+    error: false,
+    msg: "",
+  };
+  io.emit("message", player);
+});
 
-io.on("connection", function (client) {
+io.on("connection", (client) => {
   console.log("Cliente conectado:: ", client);
 
   client.on("message", function (message) {
