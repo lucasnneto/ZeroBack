@@ -209,7 +209,7 @@ io.on("connection", (client) => {
           Players.splice(index, 1);
           delete Players[message.data.player_id];
           let playerLeaved = {
-            action: "PLAYER_LEAVED",
+            action: "PLAYER_LOGOUT",
             data: {
               nick: message.data.nick,
               id: message.data.player_id,
@@ -228,18 +228,21 @@ io.on("connection", (client) => {
     // user disconnected
     client.on("disconnect", function (connection) {
       console.log("DISCONNECT: ", connection);
-      let playerLeaved = {
-        action: "PLAYER_LEAVED",
-        data: {
-          nick: message.data.nick,
-          id: message.data.player_id,
-        },
-        error: false,
-        msg: "",
-      };
-      console.log("MESSAGE - playerLeaved:: ", playerLeaved);
-      client.broadcast.emit("message", playerLeaved);
-      delete Players[message.data.player_id];
+      const index = Players.findIndex((el) => el.id == message.data.player_id);
+      if (index != -1) {
+        Players.splice(index, 1);
+        let playerLeaved = {
+          action: "PLAYER_LEAVED",
+          data: {
+            nick: message.data.nick,
+            id: message.data.player_id,
+          },
+          error: false,
+          msg: "",
+        };
+        console.log("MESSAGE - playerLeaved:: ", playerLeaved);
+        client.broadcast.emit("message", playerLeaved);
+      }
     });
   });
 });
