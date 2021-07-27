@@ -13,7 +13,6 @@ var Players = {};
 
 function Player(robo, position, hp) {
   this.robo = robo;
-  this.index = Players.length;
   this.position = position;
   this.hp = hp;
   this.kills = 0;
@@ -22,9 +21,6 @@ function Player(robo, position, hp) {
 Player.prototype = {
   getRobo: function () {
     return { robo: this.robo };
-  },
-  getIndex: function () {
-    return { index: this.index };
   },
   getPosition: function () {
     return { position: this.position };
@@ -61,11 +57,7 @@ function createPlayer(message, id) {
     message.data.hp
   );
   console.log("PLAYER CREATED: ", player);
-  Player = {
-    ...Player,
-    [id]: player,
-  };
-  // Player[id] = player;
+  Players[id] = player;
   console.log("PLAYERS DISPONÍVEIS: ", Players);
   return player;
 }
