@@ -130,46 +130,46 @@ io.on("connection", (client) => {
         client.broadcast.emit("message", playerMove);
         break;
 
-      // case "ATTACK":
-      //   let playerAttack = {
-      //     action: "ATTACK",
-      //     time: message.time || "",
-      //     data: {
-      //       player_id: message.data.player_id,
-      //       direction: message.data.direction,
-      //       position: {
-      //         x: message.data.position.x,
-      //         y: message.data.position.y,
-      //       },
-      //     },
-      //     error: false,
-      //     msg: "",
-      //   };
-      //   console.log("PLAYER ATTACK: ", playerAttack);
-      //   client.broadcast.emit("message", playerAttack);
-      //   break;
+      case "ATTACK":
+        let playerAttack = {
+          action: "ATTACK",
+          time: message.time || "",
+          data: {
+            player_id: message.data.player_id,
+            direction: message.data.direction,
+            position: {
+              x: message.data.position.x,
+              y: message.data.position.y,
+            },
+          },
+          error: false,
+          msg: "",
+        };
+        console.log("PLAYER ATTACK: ", playerAttack);
+        client.broadcast.emit("message", playerAttack);
+        break;
 
-      // case "RECEIVED_DAMAGE":
-      //   let playerDamage = {
-      //     action: "RECEIVED_DAMAGE",
-      //     time: message.time || "",
-      //     data: {
-      //       player_id: message.data.player_id,
-      //       player_id_attack: message.data.player_id_attack,
-      //       damage: message.data.damage,
-      //     },
-      //     error: false,
-      //     msg: "",
-      //   };
+      case "RECEIVED_DAMAGE":
+        let playerDamage = {
+          action: "RECEIVED_DAMAGE",
+          time: message.time || "",
+          data: {
+            player_id: message.data.player_id,
+            player_id_attack: message.data.player_id_attack,
+            damage: message.data.damage,
+          },
+          error: false,
+          msg: "",
+        };
 
-      //   Players[message.data.player_id].life -= message.data.damage;
+        Players[message.data.player_id].life -= message.data.damage;
 
-      //   if (Players[message.data.player_id].life <= 0)
-      //     Players[message.data.player_id_attack].kills += 1;
+        if (Players[message.data.player_id].life <= 0)
+          Players[message.data.player_id_attack].kills += 1;
 
-      //   console.log("PLAYER DAMAGE: ", playerDamage);
-      //   client.broadcast.emit("message", playerDamage);
-      //   break;
+        console.log("PLAYER DAMAGE: ", playerDamage);
+        client.broadcast.emit("message", playerDamage);
+        break;
 
       case "LOGOUT":
         delete Players[message.data.player_id];
