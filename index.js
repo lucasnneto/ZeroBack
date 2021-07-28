@@ -41,7 +41,7 @@ Player.prototype = {
 };
 
 function randomId() {
-  const id = Date.now();
+  const id = Date.now().toString();
   return id;
 }
 function createPlayer(message, id) {
