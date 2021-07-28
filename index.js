@@ -172,7 +172,7 @@ io.on("connection", (client) => {
       //   break;
 
       case "LOGOUT":
-        delete Player[message.data.player_id];
+        delete Players[message.data.player_id];
         let playerLeaved = {
           action: "PLAYER_LOGOUT",
           data: {
@@ -192,6 +192,7 @@ io.on("connection", (client) => {
     // user disconnected
     client.on("disconnect", function (connection) {
       console.log("DISCONNECT: ", connection);
+      delete Players[message.data.player_id];
       let playerLeaved = {
         action: "PLAYER_LEAVED",
         data: {
