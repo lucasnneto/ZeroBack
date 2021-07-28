@@ -192,11 +192,10 @@ io.on("connection", (client) => {
     // user disconnected
     client.on("disconnect", function (connection) {
       console.log("DISCONNECT: ", connection);
-      delete Players[message.data.player_id];
+      Players = {};
       let playerLeaved = {
         action: "PLAYER_LEAVED",
         data: {
-          id: message.data.player_id,
           playersON: Players,
         },
         error: false,
