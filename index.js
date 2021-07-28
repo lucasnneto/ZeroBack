@@ -16,6 +16,7 @@ function Player(robo, position, hp) {
   this.position = position;
   this.hp = hp;
   this.kills = 0;
+  this.side = Object.keys(Players).length === 0 ? "l" : "r";
 }
 
 Player.prototype = {
@@ -30,6 +31,9 @@ Player.prototype = {
   },
   getKills: function () {
     return { kills: this.kills };
+  },
+  getSide: function () {
+    return { side: this.side };
   },
 };
 
@@ -88,29 +92,32 @@ io.on("connection", (client) => {
   client.on("message", function (message) {
     switch (message.action) {
       case "CREATE":
-        let playerCreated = null;
-        let id = randomId();
-        while (existeId(id)) {
-          id = randomId();
-        }
-        playerCreated = createPlayer(message, id);
+        if (Object.keys(Players).length < 2) {
+          let playerCreated = null;
+          let id = randomId();
+          while (existeId(id)) {
+            id = randomId();
+          }
+          playerCreated = createPlayer(message, id);
 
-        let player = {
-          action: "YOUR_PLAYER",
-          data: {
-            robo: playerCreated.robo,
-            hp: playerCreated.hp,
-            id: id,
-            position: playerCreated.position,
-            playersON: Players,
-          },
-          error: false,
-          msg: "",
-        };
-        client.emit("message", player);
-        player["action"] = "PLAYER_JOIN";
-        client.broadcast.emit("message", player);
-        playerCreated = null;
+          let player = {
+            action: "YOUR_PLAYER",
+            data: {
+              robo: playerCreated.robo,
+              hp: playerCreated.hp,
+              id: id,
+              side: playerCreated.side,
+              position: playerCreated.position,
+              playersON: Players,
+            },
+            error: false,
+            msg: "",
+          };
+          client.emit("message", player);
+          player["action"] = "PLAYER_JOIN";
+          client.broadcast.emit("message", player);
+          playerCreated = null;
+        }
         break;
 
       // case "MOVE":
