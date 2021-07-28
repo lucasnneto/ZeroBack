@@ -11,9 +11,12 @@ var port = process.env.PORT || 3000;
 
 var Players = {};
 
-function Player(robo, position, hp) {
+function Player(robo, hp) {
   this.robo = robo;
-  this.position = position;
+  this.position = {
+    x: "",
+    y: "",
+  };
   this.hp = hp;
   this.kills = 0;
   this.side = Object.keys(Players).length === 0 ? "l" : "r";
@@ -37,29 +40,13 @@ Player.prototype = {
   },
 };
 
-const POSITIONS_BORN = [
-  { x: 12, y: 14 },
-  { x: 17, y: 27 },
-  { x: 20, y: 33 },
-  { x: 30, y: 29 },
-  { x: 52, y: 29 },
-  { x: 60, y: 7 },
-  { x: 58, y: 18 },
-  { x: 38, y: 8 },
-  { x: 40, y: 15 },
-  { x: 44, y: 21 },
-];
 function randomId() {
   const id = Date.now();
   return id;
 }
 function createPlayer(message, id) {
   console.log("CREATE PLAYER: ", message);
-  let player = new Player(
-    message.data.robo,
-    POSITIONS_BORN[Math.floor(Math.random() * POSITIONS_BORN.length)],
-    message.data.hp
-  );
+  let player = new Player(message.data.robo, message.data.hp);
   console.log("PLAYER CREATED: ", player);
   Players[id] = player;
   console.log("PLAYERS DISPONÍVEIS: ", Players);
@@ -120,28 +107,28 @@ io.on("connection", (client) => {
         }
         break;
 
-      // case "MOVE":
-      //   let playerMove = {
-      //     action: "MOVE",
-      //     time: message.time || "",
-      //     data: {
-      //       player_id: message.data.player_id,
-      //       direction: message.data.direction,
-      //       position: {
-      //         x: message.data.position.x,
-      //         y: message.data.position.y,
-      //       },
-      //     },
-      //     error: false,
-      //     msg: "",
-      //   };
-      //   //Atualizando a posição do player
-      //   if (Players[message.data.player_id])
-      //     Players[message.data.player_id].position = message.data.position;
+      case "MOVE":
+        let playerMove = {
+          action: "MOVE",
+          time: message.time || "",
+          data: {
+            player_id: message.data.player_id,
+            direction: message.data.direction,
+            position: {
+              x: message.data.position.x,
+              y: message.data.position.y,
+            },
+          },
+          error: false,
+          msg: "",
+        };
+        //Atualizando a posição do player
+        if (Players[message.data.player_id])
+          Players[message.data.player_id].position = message.data.position;
 
-      //   console.log("PLAYER MOVE TO: ", playerMove);
-      //   client.broadcast.emit("message", playerMove);
-      //   break;
+        console.log("PLAYER MOVE TO: ", playerMove);
+        client.broadcast.emit("message", playerMove);
+        break;
 
       // case "ATTACK":
       //   let playerAttack = {
